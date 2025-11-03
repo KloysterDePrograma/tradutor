@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tradutor Hinokæmi — Novo Alfabeto</title>
+<title>Tradutor Hinokæmi & Cosmofrequência</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap');
 
@@ -21,8 +21,24 @@
     color: #d4b56a;
     text-shadow: 2px 2px 8px #000;
     font-size: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     letter-spacing: 2px;
+  }
+
+  h2 {
+    color: #c9b06d;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  select {
+    background: #1a1206;
+    color: #f5e9b5;
+    border: 2px solid #d4b56a;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-family: 'IM Fell English SC', serif;
+    margin-bottom: 1rem;
   }
 
   textarea {
@@ -80,53 +96,88 @@
 </head>
 <body>
 
-<h1>Tradutor Hinokæmi — Novo Alfabeto</h1>
+<h1>Tradutor Arcaico</h1>
+<h2>Hinokæmi Antigo & Cosmofrequência</h2>
 
-<div class="note">Agora com o alfabeto corrigido e reversão automática</div>
+<div class="note">Selecione o sistema de tradução:</div>
+<select id="modo">
+  <option value="hinokaemi">Hinokæmi Antigo</option>
+  <option value="cosmofrequencia">Cosmofrequência</option>
+</select>
 
-<textarea id="entrada" placeholder="Digite o texto em Português ou Hinokæmi..."></textarea><br>
+<textarea id="entrada" placeholder="Digite o texto em Português ou na linguagem escolhida..."></textarea><br>
 
-<button onclick="traduzir('paraHinokaemi')">Português → Hinokæmi</button>
-<button onclick="traduzir('paraPortugues')">Hinokæmi → Português</button>
+<button onclick="traduzir('paraLinguagem')">Português → Linguagem</button>
+<button onclick="traduzir('paraPortugues')">Linguagem → Português</button>
 <button onclick="limpar()">Limpar</button>
 
 <textarea id="saida" readonly placeholder="A tradução aparecerá aqui..."></textarea>
 
-<footer>⟡ Hinokæmi restaurado — versão sem duplicatas ⟡</footer>
+<footer>⟡ Hinokæmi & Cosmofrequência — preservadas da extinção digital ⟡</footer>
 
 <script>
-const latinToHinokaemi = {
-  // Minúsculas
+// =========================
+// DICIONÁRIOS DE TRADUÇÃO
+// =========================
+
+// --- COSMOFREQUÊNCIA ---
+const latinToCosmo = {
   'a':'b','b':'c','c':'d','d':'e','e':'f','f':'g','g':'h','h':'i','i':'q',
   'j':'r','k':'s','l':'t','m':'u','n':'v','o':'w','p':'x','q':'▀','r':'·',
   's':'╚','t':'Ё','u':'╢','v':'╣','w':'╤','x':'╥','y':'╦','z':'╧',
-  // Maiúsculas
   'A':'а','B':'б','C':'ц','D':'д','E':'е','F':'ф','G':'г','H':'х','I':'и',
   'J':'я','K':'р','L':'с','M':'т','N':'у','O':'ж','P':'в','Q':'ь','R':'ы',
   'S':'Б','T':'Ц','U':'Д','V':'Е','W':'Ф','X':'Г','Y':'Х','Z':'И',
-  // Pontuação
   '?':'o','!':'Z','.' :'K',',' :'k'
 };
 
-// Cria dicionário reverso automaticamente
-const hinokaemiToLatin = {};
-for (const [lat, hin] of Object.entries(latinToHinokaemi)) {
-  if (!(hin in hinokaemiToLatin)) hinokaemiToLatin[hin] = lat;
+// --- HINOKÆMI ANTIGO ---
+const latinToHino = {
+  'A':'Årr','B':'Bōr','C':'Cön','D':'Dëm','E':'Ër','F':'Fëhr','G':'Gïm','H':'Hūr','I':'Ïsŷr','J':'Jër',
+  'K':'Kīr','L':'Ëllëw','M':'Mër','N':'Nŷet','O':'Ōm','P':'Pŷün','Q':'Qėt','R':'Rër','S':'Sät','T':'Tær',
+  'U':'Ūrr','V':'Vīx','W':'Wŷg','X':'Xûr','Y':'ŷgg','Z':'Zîr'
+};
+
+// Dicionários inversos automáticos
+function inverterMapa(mapa) {
+  const inverso = {};
+  for (const [ch, simb] of Object.entries(mapa)) {
+    if (!inverso[simb]) inverso[simb] = ch;
+  }
+  return inverso;
 }
 
+const cosmoToLatin = inverterMapa(latinToCosmo);
+const hinoToLatin = inverterMapa(latinToHino);
+
+// =========================
+// FUNÇÕES DE TRADUÇÃO
+// =========================
 function traduzir(direcao) {
+  const modo = document.getElementById("modo").value;
   const entrada = document.getElementById("entrada").value;
   const saida = document.getElementById("saida");
-  saida.value = direcao === "paraHinokaemi"
-    ? aplicarMapa(entrada, latinToHinokaemi)
-    : aplicarMapa(entrada, hinokaemiToLatin);
+
+  let mapa;
+  if (modo === "cosmofrequencia") {
+    mapa = (direcao === "paraLinguagem") ? latinToCosmo : cosmoToLatin;
+  } else {
+    mapa = (direcao === "paraLinguagem") ? latinToHino : hinoToLatin;
+  }
+
+  saida.value = aplicarMapa(entrada, mapa);
 }
 
 function aplicarMapa(texto, mapa) {
-  let resultado = "";
-  for (let ch of texto) {
-    resultado += mapa[ch] || ch;
+  let resultado = texto;
+
+  // Ordena símbolos maiores primeiro (para evitar sobreposição)
+  const ordenado = Object.entries(mapa).sort((a,b)=>b[0].length - a[0].length);
+  for (const [origem, destino] of ordenado) {
+    const regexMaius = new RegExp(origem, "g");
+    resultado = resultado.replace(regexMaius, destino);
   }
+
   return resultado;
 }
 
