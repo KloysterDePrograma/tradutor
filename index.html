@@ -1,305 +1,526 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tradutor Arcaico — Hinokæmi & Cosmofrequência (æ interpretado como ae)</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hinokæmi Antigo & Cosmofrequência</title>
+    <style>
+        :root {
+            --primary: #2c1810;
+            --secondary: #d4af37;
+            --accent: #ff7f00;
+            --light: #f5f5dc;
+            --dark: #2c1810;
+            --success: #b8860b;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a0f08 0%, #2c1810 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #d4af37, #ff7f00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            color: #d4af37;
+        }
+        
+        .description {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #d4af37;
+        }
+        
+        .translation-system {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .input-section, .output-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .input-section:hover, .output-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            font-size: 1.2rem;
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #d4af37, #b8860b);
+            color: #2c1810;
+            box-shadow: 0 2px 5px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #b8860b, #d4af37);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #ff7f00, #cc6600);
+            color: white;
+            box-shadow: 0 2px 5px rgba(255, 127, 0, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #cc6600, #ff7f00);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 127, 0, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--light);
+            font-size: 1rem;
+            resize: vertical;
+            transition: var(--transition);
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+        }
+        
+        .result-area {
+            min-height: 200px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 20px;
+            overflow-y: auto;
+            color: var(--light); /* Garantir que o texto no resultado seja claro */
+        }
+        
+        .info-box {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            opacity: 0.05;
+            z-index: -1;
+        }
+        
+        .decoration-1 {
+            top: 10%;
+            left: 5%;
+            background: radial-gradient(circle, #d4af37 0%, transparent 70%);
+        }
+        
+        .decoration-2 {
+            bottom: 10%;
+            right: 5%;
+            background: radial-gradient(circle, #ff7f00 0%, transparent 70%);
+        }
+        
+        @media (max-width: 768px) {
+            .translation-system {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .language-selector {
+                flex-direction: column;
+            }
+        }
 
-  :root {
-    --bg: radial-gradient(circle at 20% 30%, #0a0a1a 0%, #050510 100%);
-    --panel: rgba(20, 20, 40, 0.6);
-    --text: #e4eaff;
-    --accent: #00b8ff;
-    --accent2: #6fdcff;
-    --border: #1a1a30;
-  }
+        /* Estilos para o seletor de modo */
+        .mode-selector-group {
+            margin-bottom: 20px;
+        }
 
-  body.light {
-    --bg: radial-gradient(circle at 50% 40%, #f3f6ff 0%, #d6e3ff 100%);
-    --panel: rgba(255, 255, 255, 0.9);
-    --text: #0a0a0a;
-    --accent: #3450ff;
-    --accent2: #1a32a8;
-    --border: #bfcaff;
-  }
+        .mode-selector-group label {
+            display: block;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
 
-  body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    transition: background 0.35s ease, color 0.35s ease;
-  }
-
-  h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    margin-top: 2rem;
-    color: var(--accent2);
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px var(--accent2);
-  }
-
-  h2 {
-    color: var(--accent);
-    font-size: 1rem;
-    margin-top: 0.3rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .panel {
-    background: var(--panel);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    width: 92%;
-    max-width: 800px;
-    box-shadow: 0 0 30px rgba(0,180,255,0.08);
-  }
-
-  label { color: var(--accent); font-weight:600; font-size:0.9rem; }
-
-  select {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    padding: 6px 10px;
-    margin: 0.5rem 0 1rem;
-    font-family: 'Inter', sans-serif;
-  }
-
-  textarea {
-    width: 100%;
-    height: 150px;
-    margin-top: 0.5rem;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-size: 1rem;
-    padding: 12px;
-    resize: vertical;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
-    font-family: 'Inter', sans-serif;
-    line-height:1.45;
-  }
-
-  textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
-    outline: none;
-  }
-
-  .buttons {
-    margin: 1rem 0;
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-
-  button {
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    padding: 10px 18px;
-    cursor: pointer;
-    font-weight: 600;
-    letter-spacing: 0.4px;
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-
-  button:hover { transform: translateY(-4px); box-shadow:0 8px 20px rgba(0,180,255,0.15); }
-
-  #temaBtn {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    background: transparent;
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    color: var(--accent);
-    padding: 8px 12px;
-    cursor:pointer;
-    font-weight:600;
-  }
-
-  footer { margin: 2rem 0; color: var(--accent); font-size: .9rem; opacity:0.9; }
-  
-  .info {
-    font-size: 0.85rem;
-    color: #9fbff6;
-    margin-bottom: .8rem;
-  }
-</style>
+        .mode-selector-group select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--secondary);
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--light);
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-<button id="temaBtn" onclick="alternarTema()">Alternar tema</button>
-
-<h1>TRADUTOR ARCAICO</h1>
-<h2>Hinokæmi Antigo & Cosmofrequência</h2>
-
-<div class="panel">
-  <div class="info">
-    Hinokæmi mantém acentos na tradução para a linguagem, mas traduz de volta para português sem acentos; Cosmofrequência ignora acentos e lê "æ" como "ae".
-  </div>
-
-  <label for="modo">Sistema de tradução</label><br />
-  <select id="modo">
-    <option value="hinokaemi">Hinokæmi Antigo</option>
-    <option value="cosmofrequencia">Cosmofrequência</option>
-  </select>
-
-  <label for="entrada">Texto de entrada</label>
-  <textarea id="entrada" placeholder="Digite aqui (Português ou linguagem selecionada)"></textarea>
-
-  <div class="buttons">
-    <button onclick="traduzir('paraLinguagem')">Português → Linguagem</button>
-    <button onclick="traduzir('paraPortugues')">Linguagem → Português</button>
-    <button onclick="limpar()">Limpar</button>
-    <button onclick="copiar()">Copiar resultado</button>
-  </div>
-
-  <label for="saida">Resultado</label>
-  <textarea id="saida" readonly placeholder="Resultado aparecerá aqui..."></textarea>
-</div>
-
-<footer>© 2025 — æ agora compreendido pela Cosmofrequência</footer>
-
-<script>
-// Remove acentos e converte æ → ae
-function limparAcentosEAE(texto) {
-  return texto
-    .replace(/æ/gi, match => match === "Æ" ? "Ae" : "ae")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-function escapeRegex(str){
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-// Cosmofrequência
-const latinToCosmo = {
-  'a':'b','b':'c','c':'d','d':'e','e':'f','f':'g','g':'h','h':'i','i':'q',
-  'j':'r','k':'s','l':'t','m':'u','n':'v','o':'w','p':'x','q':'▀','r':'·',
-  's':'╚','t':'Ё','u':'╢','v':'╣','w':'╤','x':'╥','y':'╦','z':'╧',
-  'A':'а','B':'б','C':'ц','D':'д','E':'е','F':'ф','G':'г','H':'х','I':'и',
-  'J':'я','K':'р','L':'с','M':'т','N':'у','O':'ж','P':'в','Q':'ь','R':'ы',
-  'S':'Б','T':'Ц','U':'Д','V':'Е','W':'Ф','X':'Г','Y':'Х','Z':'И',
-  '?':'o','!':'Z','.' :'K',',' :'k'
-};
-
-// Hinokæmi com acentos (para tradução PT → Hinokæmi)
-const latinToHino = {
-  'A':'Årr','B':'Bōr','C':'Cön','D':'Dëm','E':'Ër','F':'Fëhr','G':'Gïm','H':'Hūr','I':'Ïsŷr','J':'Jër',
-  'K':'Kīr','L':'Ëllëw','M':'Mër','N':'Nŷet','O':'Ōm','P':'Pŷün','Q':'Qėt','R':'Rër','S':'Sät','T':'Tær',
-  'U':'Ūrr','V':'Vīx','W':'Wŷg','X':'Xûr','Y':'ŷgg','Z':'Zîr'
-};
-for (const k of Object.keys(latinToHino)) latinToHino[k.toLowerCase()] = latinToHino[k];
-
-// Criar mapa reverso normalizado (sem acentos) para Hinokæmi → PT
-function criarMapaReversoComCapitalizacao(mapa) {
-  const reverso = {};
-  for (const [letra, simbolo] of Object.entries(mapa)) {
-    // 1. Símbolo Hinokæmi em minúsculas e sem acentos
-    const simboloMin = limparAcentosEAE(simbolo.toLowerCase());
-    // 2. Símbolo Hinokæmi com a primeira letra maiúscula e sem acentos
-    const simboloCap = limparAcentosEAE(simbolo.charAt(0).toUpperCase() + simbolo.slice(1).toLowerCase());
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
     
-    // Letra portuguesa correspondente em minúsculas e maiúsculas
-    const letraMin = limparAcentosEAE(letra.toLowerCase());
-    const letraCap = limparAcentosEAE(letra.toUpperCase());
+    <div class="container">
+        <header>
+            <h1>Hinokæmi Antigo & Cosmofrequência</h1>
+            <p class="subtitle">Sistema avançado de tradução linguística</p>
+            <div class="description">
+                <p id="description-text">Hinokæmi mantém acentos na tradução para a linguagem, mas traduz de volta para português sem acentos; Cosmofrequência ignora acentos e lê "æ" como "ae".</p>
+            </div>
+        </header>
+        
+        <main>
+            <div class="mode-selector-group">
+                <label for="modo">Sistema de Tradução</label>
+                <select id="modo">
+                    <option value="hinokaemi">Hinokæmi Antigo</option>
+                    <option value="cosmofrequencia">Cosmofrequência</option>
+                </select>
+            </div>
 
-    // Mapeamento para minúsculas
-    if (!(simboloMin in reverso)) reverso[simboloMin] = letraMin;
-    
-    // Mapeamento para capitalização (se a letra original era maiúscula)
-    if (!(simboloCap in reverso)) reverso[simboloCap] = letraCap;
-  }
-  return reverso;
-}
+            <div class="translation-system">
+                <div class="input-section">
+                    <h2><i class="fas fa-keyboard"></i> Texto de Entrada</h2>
+                    <textarea id="entrada" placeholder="Digite aqui (Português ou linguagem selecionada)"></textarea>
+                    
+                    <div class="btn-group">
+                        <button id="btn-pt-lang" class="btn-primary"><i class="fas fa-arrow-right"></i> Português → Linguagem</button>
+                        <button id="btn-lang-pt" class="btn-secondary"><i class="fas fa-arrow-left"></i> Linguagem → Português</button>
+                    </div>
 
-function inverterMapa(mapa){
-  const inv = {};
-  for (const [k,v] of Object.entries(mapa)){
-    if (!(v in inv)) inv[v] = k;
-  }
-  return inv;
-}
+                    <div class="btn-group">
+                        <button id="btn-clear-input" class="btn-outline"><i class="fas fa-broom"></i> Limpar Entrada</button>
+                        <button id="btn-copy-input" class="btn-outline"><i class="fas fa-copy"></i> Copiar Entrada</button>
+                    </div>
+                </div>
+                
+                <div class="output-section">
+                    <h2><i class="fas fa-language"></i> Resultado</h2>
+                    <textarea id="saida" readonly placeholder="Resultado aparecerá aqui..."></textarea>
+                    <div class="btn-group">
+                        <button id="btn-clear-output" class="btn-outline"><i class="fas fa-broom"></i> Limpar Resultado</button>
+                        <button id="btn-copy-output" class="btn-outline"><i class="fas fa-copy"></i> Copiar Resultado</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Nota:</strong> O sistema Hinokæmi Antigo preserva características específicas da língua original, enquanto a Cosmofrequência aplica uma abordagem mais direta à tradução.</p>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Hinokæmi Antigo & Cosmofrequência &copy; 2023 - Sistema de Tradução Avançada</p>
+        </footer>
+    </div>
 
-const cosmoToLatin = inverterMapa(latinToCosmo);
-// O mapa reverso agora inclui as versões capitalizadas dos símbolos Hinokæmi sem acentos
-const hinoToLatin = criarMapaReversoComCapitalizacao(latinToHino);
+    <script>
+        // --- Lógica de Tradução ---
 
-function traduzir(direcao){
-  const modo = document.getElementById('modo').value;
-  let texto = document.getElementById('entrada').value;
-  const saida = document.getElementById('saida');
+        // Remove acentos e converte æ → ae
+        function limparAcentosEAE(texto) {
+            return texto
+                .replace(/æ/gi, match => match === "Æ" ? "Ae" : "ae")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+        }
 
-  if (modo === 'cosmofrequencia') {
-    texto = limparAcentosEAE(texto);
-    const mapa = direcao === 'paraLinguagem' ? latinToCosmo : cosmoToLatin;
-    saida.value = aplicarMapaAvancado(texto, mapa);
-  } else {
-    // Hinokæmi
-    if (direcao === 'paraLinguagem') {
-      saida.value = traduzirHinokaemi(texto, latinToHino);
-    } else {
-      // Tradução reversa: normalizar entrada (apenas remover acentos) e traduzir
-      // A capitalização é tratada pelo mapa reverso
-      const textoNormalizado = limparAcentosEAE(texto);
-      saida.value = aplicarMapaAvancado(textoNormalizado, hinoToLatin);
-    }
-  }
-}
+        function escapeRegex(str){
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
 
-function traduzirHinokaemi(texto, mapa){
-  let resultado = '';
-  for (const ch of texto){
-    const base = ch.toLowerCase();
-    const simbolo = mapa[base];
-    if (simbolo){
-      if (ch === ch.toUpperCase() && ch.match(/[a-zA-Z]/)){
-        resultado += simbolo.charAt(0).toUpperCase() + simbolo.slice(1);
-      } else {
-        resultado += simbolo.toLowerCase();
-      }
-    } else resultado += ch;
-  }
-  return resultado;
-}
+        // Cosmofrequência
+        const latinToCosmo = {
+            'a':'b','b':'c','c':'d','d':'e','e':'f','f':'g','g':'h','h':'i','i':'q',
+            'j':'r','k':'s','l':'t','m':'u','n':'v','o':'w','p':'x','q':'▀','r':'·',
+            's':'╚','t':'Ё','u':'╢','v':'╣','w':'╤','x':'╥','y':'╦','z':'╧',
+            'A':'а','B':'б','C':'ц','D':'д','E':'е','F':'ф','G':'г','H':'х','I':'и',
+            'J':'я','K':'р','L':'с','M':'т','N':'у','O':'ж','P':'в','Q':'ь','R':'ы',
+            'S':'Б','T':'Ц','U':'Д','V':'Е','W':'Ф','X':'Г','Y':'Х','Z':'И',
+            '?':'o','!':'Z','.' :'K',',' :'k'
+        };
 
-function aplicarMapaAvancado(texto, mapa){
-  let out = texto;
-  // Ordenar por tamanho decrescente para garantir que símbolos mais longos sejam substituídos primeiro
-  const ordenado = Object.entries(mapa).sort((a,b)=>b[0].length - a[0].length);
-  for (const [orig, dest] of ordenado){
-    // Usar uma função de substituição para preservar a capitalização do resultado, se necessário
-    // No caso do Hinokæmi reverso, o mapa já contém as versões capitalizadas, então a substituição direta funciona.
-    out = out.replace(new RegExp(escapeRegex(orig),'g'), dest);
-  }
-  return out;
-}
+        // Hinokæmi com acentos (para tradução PT → Hinokæmi)
+        const latinToHino = {
+            'A':'Årr','B':'Bōr','C':'Cön','D':'Dëm','E':'Ër','F':'Fëhr','G':'Gïm','H':'Hūr','I':'Ïsŷr','J':'Jër',
+            'K':'Kīr','L':'Ëllëw','M':'Mër','N':'Nŷet','O':'Ōm','P':'Pŷün','Q':'Qėt','R':'Rër','S':'Sät','T':'Tær',
+            'U':'Ūrr','V':'Vīx','W':'Wŷg','X':'Xûr','Y':'ŷgg','Z':'Zîr'
+        };
+        for (const k of Object.keys(latinToHino)) latinToHino[k.toLowerCase()] = latinToHino[k];
 
-function limpar(){ entrada.value=''; saida.value=''; }
-function copiar(){
-  navigator.clipboard.writeText(saida.value).then(()=>alert('Copiado!')).catch(()=>alert('Falha ao copiar.'));
-}
-function alternarTema(){
-  document.body.classList.toggle('light');
-  temaBtn.textContent = document.body.classList.contains('light') ? 'Modo escuro' : 'Modo claro';
-}
-</script>
+        // Criar mapa reverso com capitalização para Hinokæmi → PT
+        function criarMapaReversoComCapitalizacao(mapa) {
+            const reverso = {};
+            for (const [letra, simbolo] of Object.entries(mapa)) {
+                // 1. Símbolo Hinokæmi em minúsculas e sem acentos
+                const simboloMin = limparAcentosEAE(simbolo.toLowerCase());
+                // 2. Símbolo Hinokæmi com a primeira letra maiúscula e sem acentos
+                const simboloCap = limparAcentosEAE(simbolo.charAt(0).toUpperCase() + simbolo.slice(1).toLowerCase());
+                
+                // Letra portuguesa correspondente em minúsculas e maiúsculas
+                const letraMin = limparAcentosEAE(letra.toLowerCase());
+                const letraCap = limparAcentosEAE(letra.toUpperCase());
+
+                // Mapeamento para minúsculas
+                if (!(simboloMin in reverso)) reverso[simboloMin] = letraMin;
+                
+                // Mapeamento para capitalização (se a letra original era maiúscula)
+                if (!(simboloCap in reverso)) reverso[simboloCap] = letraCap;
+            }
+            return reverso;
+        }
+
+        function inverterMapa(mapa){
+            const inv = {};
+            for (const [k,v] of Object.entries(mapa)){
+                if (!(v in inv)) inv[v] = k;
+            }
+            return inv;
+        }
+
+        const cosmoToLatin = inverterMapa(latinToCosmo);
+        // O mapa reverso agora inclui as versões capitalizadas dos símbolos Hinokæmi sem acentos
+        const hinoToLatin = criarMapaReversoComCapitalizacao(latinToHino);
+
+        function traduzir(direcao){
+            const modo = document.getElementById('modo').value;
+            let texto = document.getElementById('entrada').value;
+            const saida = document.getElementById('saida');
+
+            if (modo === 'cosmofrequencia') {
+                texto = limparAcentosEAE(texto);
+                const mapa = direcao === 'paraLinguagem' ? latinToCosmo : cosmoToLatin;
+                saida.value = aplicarMapaAvancado(texto, mapa);
+            } else {
+                // Hinokæmi
+                if (direcao === 'paraLinguagem') {
+                    saida.value = traduzirHinokaemi(texto, latinToHino);
+                } else {
+                    // Tradução reversa: normalizar entrada (apenas remover acentos) e traduzir
+                    // A capitalização é tratada pelo mapa reverso
+                    const textoNormalizado = limparAcentosEAE(texto);
+                    saida.value = aplicarMapaAvancado(textoNormalizado, hinoToLatin);
+                }
+            }
+        }
+
+        function traduzirHinokaemi(texto, mapa){
+            let resultado = '';
+            for (const ch of texto){
+                const base = ch.toLowerCase();
+                const simbolo = mapa[base];
+                if (simbolo){
+                    if (ch === ch.toUpperCase() && ch.match(/[a-zA-Z]/)){
+                        resultado += simbolo.charAt(0).toUpperCase() + simbolo.slice(1);
+                    } else {
+                        resultado += simbolo.toLowerCase();
+                    }
+                } else resultado += ch;
+            }
+            return resultado;
+        }
+
+        function aplicarMapaAvancado(texto, mapa){
+            let out = texto;
+            // Ordenar por tamanho decrescente para garantir que símbolos mais longos sejam substituídos primeiro
+            const ordenado = Object.entries(mapa).sort((a,b)=>b[0].length - a[0].length);
+            for (const [orig, dest] of ordenado){
+                out = out.replace(new RegExp(escapeRegex(orig),'g'), dest);
+            }
+            return out;
+        }
+
+        // --- Lógica de Interface ---
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const entrada = document.getElementById('entrada');
+            const saida = document.getElementById('saida');
+            const modo = document.getElementById('modo');
+            const descriptionText = document.getElementById('description-text');
+
+            const btnPtLang = document.getElementById('btn-pt-lang');
+            const btnLangPt = document.getElementById('btn-lang-pt');
+            const btnClearInput = document.getElementById('btn-clear-input');
+            const btnCopyInput = document.getElementById('btn-copy-input');
+            const btnClearOutput = document.getElementById('btn-clear-output');
+            const btnCopyOutput = document.getElementById('btn-copy-output');
+
+            // Função para atualizar a descrição com base no modo
+            function updateDescription() {
+                if (modo.value === 'hinokaemi') {
+                    descriptionText.textContent = 'Hinokæmi mantém acentos na tradução para a linguagem, mas traduz de volta para português sem acentos (mantendo a capitalização correta).';
+                } else {
+                    descriptionText.textContent = 'Cosmofrequência ignora acentos e lê "æ" como "ae".';
+                }
+            }
+
+            // Evento de mudança de modo
+            modo.addEventListener('change', updateDescription);
+            updateDescription(); // Inicializa a descrição
+
+            // Botões de tradução
+            btnPtLang.addEventListener('click', function() {
+                traduzir('paraLinguagem');
+            });
+
+            btnLangPt.addEventListener('click', function() {
+                traduzir('paraPortugues');
+            });
+
+            // Limpar campos
+            btnClearInput.addEventListener('click', function() {
+                entrada.value = '';
+            });
+
+            btnClearOutput.addEventListener('click', function() {
+                saida.value = '';
+            });
+
+            // Copiar texto
+            function copyText(element, button) {
+                if (element.value.trim() !== '') {
+                    navigator.clipboard.writeText(element.value)
+                        .then(() => {
+                            const originalText = button.innerHTML;
+                            button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                            setTimeout(() => {
+                                button.innerHTML = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Erro ao copiar texto: ', err);
+                        });
+                }
+            }
+
+            btnCopyInput.addEventListener('click', function() {
+                copyText(entrada, this);
+            });
+
+            btnCopyOutput.addEventListener('click', function() {
+                copyText(saida, this);
+            });
+        });
+    </script>
 </body>
 </html>
