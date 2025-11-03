@@ -414,7 +414,9 @@
             } else {
                 // Hinokæmi
                 if (direcao === 'paraLinguagem') {
-                    saida.value = traduzirHinokaemi(texto, latinToHino);
+                    // Novo: Limpar acentos na entrada antes de traduzir para Hinokæmi
+                    const textoSemAcentos = limparAcentosEAE(texto);
+                    saida.value = traduzirHinokaemi(textoSemAcentos, latinToHino);
                 } else {
                     // Tradução reversa: normalizar entrada (apenas remover acentos) e traduzir
                     // A capitalização é tratada pelo mapa reverso
