@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tradutor Arcaico — Hinokæmi & Cosmofrequência</title>
+<title>Tradutor Arcaico — Hinokaemi & Cosmofrequência (sem acentos)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap');
 
@@ -18,14 +18,14 @@
 
   body.light {
     --bg: radial-gradient(circle at 50% 40%, #f3f6ff 0%, #d6e3ff 100%);
-    --panel: rgba(255, 255, 255, 0.7);
+    --panel: rgba(255, 255, 255, 0.9);
     --text: #0a0a0a;
     --accent: #3450ff;
     --accent2: #1a32a8;
     --border: #bfcaff;
   }
 
-  body {
+  body{
     margin: 0;
     padding: 0;
     background: var(--bg);
@@ -35,7 +35,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    transition: background 0.5s ease, color 0.5s ease;
+    transition: background 0.35s ease, color 0.35s ease;
   }
 
   h1 {
@@ -51,7 +51,7 @@
     color: var(--accent);
     font-size: 1rem;
     margin-top: 0.3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
   }
 
   .panel {
@@ -60,35 +60,39 @@
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 1.5rem;
-    width: 90%;
-    max-width: 700px;
-    box-shadow: 0 0 30px var(--accent2);
-    transition: background 0.5s ease, color 0.5s ease;
+    width: 92%;
+    max-width: 800px;
+    box-shadow: 0 0 30px rgba(0,180,255,0.08);
   }
+
+  label { color: var(--accent); font-weight:600; font-size:0.9rem; }
+
+  .row { display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
 
   select {
     background: transparent;
     color: var(--text);
     border: 1px solid var(--accent);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 6px 10px;
-    margin-bottom: 1rem;
+    margin: 0.5rem 0 1rem;
     font-family: 'Inter', sans-serif;
   }
 
   textarea {
     width: 100%;
-    height: 130px;
+    height: 150px;
     margin-top: 0.5rem;
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 10px;
     color: var(--text);
     font-size: 1rem;
-    padding: 10px;
+    padding: 12px;
     resize: vertical;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
     font-family: 'Inter', sans-serif;
+    line-height:1.45;
   }
 
   textarea:focus {
@@ -99,6 +103,9 @@
 
   .buttons {
     margin: 1rem 0;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
   }
 
   button {
@@ -106,19 +113,14 @@
     border: none;
     border-radius: 8px;
     color: #fff;
-    padding: 10px 20px;
-    margin: 0.3rem;
+    padding: 10px 18px;
     cursor: pointer;
     font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: 0.2s;
-    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.4px;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
 
-  button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 15px var(--accent);
-  }
+  button:hover { transform: translateY(-4px); box-shadow:0 8px 20px rgba(0,180,255,0.15); }
 
   #temaBtn {
     position: fixed;
@@ -128,14 +130,17 @@
     border: 1px solid var(--accent);
     border-radius: 8px;
     color: var(--accent);
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 8px 12px;
+    cursor:pointer;
+    font-weight:600;
   }
 
-  footer {
-    margin: 2rem 0;
-    color: var(--accent);
+  footer { margin: 2rem 0; color: var(--accent); font-size: .9rem; opacity:0.9; }
+  
+  .info {
     font-size: 0.85rem;
+    color: #9fbff6;
+    margin-bottom: .8rem;
   }
 </style>
 </head>
@@ -147,33 +152,40 @@
 <h2>Hinokæmi Antigo & Cosmofrequência</h2>
 
 <div class="panel">
-  <label for="modo">Sistema de tradução:</label><br />
-  <select id="modo">
-    <option value="hinokaemi">Hinokæmi Antigo</option>
+  <div class="info">Escolha o sistema e a direção. No Hinokæmi, maiúsculas e minúsculas têm o mesmo significado; agora sem acentos.</div>
+
+  <label for="modo">Sistema de tradução</label><br />
+  <select id="modo" aria-label="Selecionar sistema">
+    <option value="hinokaemi">Hinokæmi Antigo (sem acentos)</option>
     <option value="cosmofrequencia">Cosmofrequência</option>
   </select>
 
-  <label for="entrada">Texto de entrada:</label>
-  <textarea id="entrada" placeholder="Digite o texto em Português ou na linguagem escolhida..."></textarea>
+  <label for="entrada">Texto de entrada</label>
+  <textarea id="entrada" placeholder="Cole ou digite aqui (Português ou linguagem selecionada)"></textarea>
 
   <div class="buttons">
     <button onclick="traduzir('paraLinguagem')">Português → Linguagem</button>
     <button onclick="traduzir('paraPortugues')">Linguagem → Português</button>
     <button onclick="limpar()">Limpar</button>
+    <button onclick="copiar()" title="Copiar resultado">Copiar resultado</button>
   </div>
 
-  <label for="saida">Resultado:</label>
-  <textarea id="saida" readonly placeholder="A tradução aparecerá aqui..."></textarea>
+  <label for="saida">Resultado</label>
+  <textarea id="saida" readonly placeholder="Resultado aparecerá aqui..."></textarea>
 </div>
 
-<footer>© 2025 — Versão Neon & Etérea | Hinokæmi não diferencia maiúsculas e minúsculas</footer>
+<footer>© 2025 — Hinokæmi sem respira ASCII</footer>
 
 <script>
-// =====================
-// ALFABETOS DE TRADUÇÃO
-// =====================
+// ---------- helpers ----------
+function escapeRegex(str){
+  // escapa caracteres especiais para usar no RegExp
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
-// COSMOFREQUÊNCIA
+// ---------- MAPAS ----------
+
+// COSMOFREQUÊNCIA (minúsculas e maiúsculas distintas — conforme tabela original)
 const latinToCosmo = {
   'a':'b','b':'c','c':'d','d':'e','e':'f','f':'g','g':'h','h':'i','i':'q',
   'j':'r','k':'s','l':'t','m':'u','n':'v','o':'w','p':'x','q':'▀','r':'·',
@@ -184,23 +196,28 @@ const latinToCosmo = {
   '?':'o','!':'Z','.' :'K',',' :'k'
 };
 
-// HINOKÆMI ANTIGO (maiúsculas e minúsculas equivalentes)
+// HINOKÆMI ANTIGO — sem acentos agora (maiúsculas e minúsculas equivalentes)
 const latinToHino = {
-  'A':'Årr','B':'Bōr','C':'Cön','D':'Dëm','E':'Ër','F':'Fëhr','G':'Gïm','H':'Hūr','I':'Ïsŷr','J':'Jër',
-  'K':'Kīr','L':'Ëllëw','M':'Mër','N':'Nŷet','O':'Ōm','P':'Pŷün','Q':'Qėt','R':'Rër','S':'Sät','T':'Tær',
-  'U':'Ūrr','V':'Vīx','W':'Wŷg','X':'Xûr','Y':'ŷgg','Z':'Zîr'
+  'A':'Arr','B':'Bor','C':'Con','D':'Dem','E':'Er','F':'Fehr','G':'Gim','H':'Hur','I':'Isyr','J':'Jer',
+  'K':'Kir','L':'Ellew','M':'Mer','N':'Nyet','O':'Om','P':'Pyun','Q':'Qet','R':'Rer','S':'Sat','T':'Taer',
+  'U':'Urr','V':'Vix','W':'Wyg','X':'Xur','Y':'Ygg','Z':'Zir'
 };
 
-// gera versões minúsculas equivalentes
-for (const [ch, simb] of Object.entries(latinToHino)) {
-  latinToHino[ch.toLowerCase()] = simb;
+// tornar minúsculas equivalentes (A/a -> Arr)
+for (const k of Object.keys(Object.assign({}, latinToHino))) {
+  const lower = k.toLowerCase();
+  if (!(lower in latinToHino)) latinToHino[lower] = latinToHino[k];
 }
 
-// Inversores
-function inverterMapa(mapa) {
+// ---------- MAPAS INVERSOS ----------
+// cria mapa destino->origem para reversão
+function inverterMapa(mapa){
   const inverso = {};
-  for (const [origem, destino] of Object.entries(mapa)) {
-    if (!inverso[destino]) inverso[destino] = origem;
+  // percorrer entradas ordenadas para evitar sobrescrever com entradas "menores" mais tarde
+  // para reverso, queremos que ocorrências mais longas sejam testadas primeiro quando montamos regex
+  for (const [orig, dest] of Object.entries(mapa)) {
+    if (!(dest in inverso)) inverso[dest] = orig;
+    // se já existir, mantemos o primeiro (consistência)
   }
   return inverso;
 }
@@ -208,44 +225,77 @@ function inverterMapa(mapa) {
 const cosmoToLatin = inverterMapa(latinToCosmo);
 const hinoToLatin = inverterMapa(latinToHino);
 
-// Tradução
-function traduzir(direcao) {
-  const modo = document.getElementById("modo").value;
-  const entrada = document.getElementById("entrada").value;
-  const saida = document.getElementById("saida");
-
+// ---------- FUNÇÕES DE TRADUÇÃO ----------
+function traduzir(direcao){
+  const modo = document.getElementById('modo').value;
+  const entrada = document.getElementById('entrada').value;
   let mapa;
-  if (modo === "cosmofrequencia") {
-    mapa = (direcao === "paraLinguagem") ? latinToCosmo : cosmoToLatin;
+
+  if (modo === 'cosmofrequencia') {
+    mapa = (direcao === 'paraLinguagem') ? latinToCosmo : cosmoToLatin;
+    // forward map: single-char origem -> destino (ok)
+    // reverse map: destino may be multichar; handled below
   } else {
-    mapa = (direcao === "paraLinguagem") ? latinToHino : hinoToLatin;
+    mapa = (direcao === 'paraLinguagem') ? latinToHino : hinoToLatin;
+    // note: latinToHino contains both uppercase and lowercase keys mapping to same dest;
+    // hinoToLatin maps dest->orig (single letter)
   }
 
-  saida.value = aplicarMapa(entrada, mapa);
+  const resultado = aplicarMapaAvancado(entrada, mapa, direcao, modo);
+  document.getElementById('saida').value = resultado;
 }
 
-function aplicarMapa(texto, mapa) {
-  let resultado = texto;
-  const ordenado = Object.entries(mapa).sort((a,b)=>b[0].length - a[0].length);
-  for (const [origem, destino] of ordenado) {
-    const regex = new RegExp(origem, "g");
-    resultado = resultado.replace(regex, destino);
+// Aplicador de mapas que trata corretamente:
+// - quando origem tem múltiplos caracteres (reverse maps)
+// - quando precisamos de substituições sem colisão (testar padrões mais longos primeiro)
+// - escapa padrões que possam conter metacaracteres
+function aplicarMapaAvancado(texto, mapa, direcao, modo){
+  // Quando mapa é do tipo origem->destino e origem é normalmente 1 char (forward),
+  // substituímos caractere por caractere.
+  // Quando mapa é destino->origem (reverse), as chaves podem ter vários chars; tratamos com regex ordenado.
+  
+  // Detecta se chaves têm comprimento > 1
+  const keys = Object.keys(mapa);
+  const hasMulti = keys.some(k => k.length > 1);
+
+  if (!hasMulti) {
+    // substituição simples por caractere (mais rápida e segura)
+    let out = '';
+    for (const ch of texto) {
+      out += (ch in mapa) ? mapa[ch] : ch;
+    }
+    return out;
+  } else {
+    // precisamos fazer substituições por padrões (ordenar por comprimento decrescente)
+    const ordenado = keys.slice().sort((a,b)=>b.length - a.length);
+    let out = texto;
+    for (const origem of ordenado) {
+      const destino = mapa[origem];
+      const pat = new RegExp(escapeRegex(origem), 'g');
+      out = out.replace(pat, destino);
+    }
+    return out;
   }
-  return resultado;
 }
 
-function limpar() {
-  document.getElementById("entrada").value = "";
-  document.getElementById("saida").value = "";
+// ---------- UTILITÁRIOS ----------
+function limpar(){ document.getElementById('entrada').value=''; document.getElementById('saida').value=''; }
+function alternarTema(){
+  document.body.classList.toggle('light');
+  document.getElementById('temaBtn').textContent = document.body.classList.contains('light') ? 'Modo escuro' : 'Modo claro';
 }
-
-// Tema claro/escuro
-function alternarTema() {
-  document.body.classList.toggle("light");
-  const btn = document.getElementById("temaBtn");
-  btn.textContent = document.body.classList.contains("light") ? "Modo escuro" : "Modo claro";
+function copiar(){
+  const s = document.getElementById('saida').value;
+  if(!s) return;
+  navigator.clipboard?.writeText(s).then(()=> {
+    const btn = event.target;
+    const old = btn.textContent;
+    btn.textContent = 'Copiado ✓';
+    setTimeout(()=> btn.textContent = old, 1200);
+  }).catch(()=> {
+    alert('Não foi possível copiar — copie manualmente.');
+  });
 }
 </script>
-
 </body>
 </html>
